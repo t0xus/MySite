@@ -25,6 +25,10 @@
       {
          "Name": "public.resume_lifestage",
          "ObjectType": 0
+      },
+      {
+         "Name": "public.resume_login",
+         "ObjectType": 0
       }
    ],
    "UiHint": null,

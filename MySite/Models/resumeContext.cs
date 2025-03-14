@@ -19,6 +19,8 @@ public partial class resumeContext : DbContext
 
     public virtual DbSet<ResumeLifestage> ResumeLifestages { get; set; }
 
+    public virtual DbSet<ResumeLogin> ResumeLogins { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ResumeContact>(entity =>
@@ -74,6 +76,21 @@ public partial class resumeContext : DbContext
                 .HasMaxLength(40)
                 .HasColumnName("lifestage_title");
             entity.Property(e => e.Order).HasColumnName("order");
+        });
+
+        modelBuilder.Entity<ResumeLogin>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("resume_login_pkey");
+
+            entity.ToTable("resume_login");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Pwhash)
+                .HasMaxLength(100)
+                .HasColumnName("pwhash");
+            entity.Property(e => e.Username)
+                .HasMaxLength(100)
+                .HasColumnName("username");
         });
 
         OnModelCreatingPartial(modelBuilder);
