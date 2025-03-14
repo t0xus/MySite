@@ -4,63 +4,100 @@
     ViewData["Title"] = "Home page";
 }
 
-<form method="post">
-    <table border="0" style="
-        border-collapse: collapse;
-        width: 400px;
-        margin: 50px auto;
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    ">
-        <tr>
-            <td colspan="2" style="text-align: center; padding-bottom: 20px;">
-                <h2>Login</h2>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 10px; width: 35%;">
-                <label for="username" style="font-weight: bold;">Username:</label>
-            </td>
-            <td style="padding: 10px;">
-                <input type="text" id="username" name="username" style="
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                " required />
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 10px;">
-                <label for="password" style="font-weight: bold;">Password:</label>
-            </td>
-            <td style="padding: 10px;">
-                <input type="password" id="password" name="password" style="
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                " required />
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center; padding-top: 20px;">
-                <button type="submit" style="
-                    padding: 10px 30px;
-                    border-radius: 12px;
-                    border: none;
-                    background-color: #007BFF;
-                    color: white;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                " onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007BFF';">
-                    Login
-                </button>
-            </td>
-        </tr>
-    </table>
-</form>
+<!-- Falls du eine Erfolgsmeldung o.Ä. willst, kannst du sie hier anzeigen -->
+@if (Model.IsLoggedIn)
+{
+    <div style="text-align:center; margin-top:50px;">
+        <h2>Willkommen, du bist bereits eingeloggt!</h2>
+        <!-- Optional: Logout-Link -->
+        <a asp-page="/Logout">Logout</a>
+
+        <form method="post">
+         Abschnitt   
+            <select asp-for="SelectedStage" asp-items="Model.ColorOptions"></select>
+            <br/>
+         Position
+            <input type="text" asp-for="PositionTitle">
+            <br/>
+            Platz
+            <input type="text" asp-for="Place">
+            <br/>
+            Unternehmen
+            <input type="text" asp-for="Company">
+            <br/>
+            Inhalt
+            <textarea name="ResumeContent"></textarea>
+            <br />
+            <input type="submit" value="Speichern" />
+        </form>
+    </div>
+}
+else
+{
+    <form method="post">
+        <table border="0" style="
+            border-collapse: collapse;
+            width: 400px;
+            margin: 50px auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            ">
+            <tr>
+                <td colspan="2" style="text-align: center; padding-bottom: 20px;">
+                    <h2>Login</h2>
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div style="color: red;">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; width: 35%;">
+                    <label for="username" style="font-weight: bold;">Username:</label>
+                </td>
+                <td style="padding: 10px;">
+                    <input type="text" id="username" asp-for="Username" style="
+                        width: 100%;
+                        padding: 8px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        " required />
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">
+                    <label for="password" style="font-weight: bold;">Password:</label>
+                </td>
+                <td style="padding: 10px;">
+                    <input type="password" id="password" asp-for="Password" style="
+                        width: 100%;
+                        padding: 8px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        " required />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; padding-top: 20px;">
+                    <button type="submit" style="
+                        padding: 10px 30px;
+                        border-radius: 12px;
+                        border: none;
+                        background-color: #007BFF;
+                        color: white;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                        " onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007BFF';">
+                        Login
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+}
 
