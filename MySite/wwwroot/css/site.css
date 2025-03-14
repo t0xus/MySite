@@ -1,0 +1,75 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+#topper {
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+    background-image: url('../images/topper.png');
+    position: relative;
+    z-index: 2;
+}
+
+#portrait {
+    background-image: url('../images/portrait.png');
+    width: 155px;
+    height: 155px;
+    margin-top: 20px;
+    margin-left: 20px;
+    z-index: 2;
+}
+
+#address_info {
+    /*margin-top: 10px;*/
+    width: 100%;
+    height: 200px;
+    background-color: #f0f0f0;
+    border: 1px solid black;
+    /*z-index: 1;*/
+}
+
+#skill_description{
+        width: 100%;
+    /*height: 200px;*/
+    background-color: #f0f0f0;
+    border: 1px solid black;
+    text-align:left
+}
+
+#life_section{
+  width: 100%;
+  border-top: 1px solid black;
+  
+}
+
+#date_section{
+      width: 25%;
+      margin-left: 30px;
+      margin-top: 20px;  
+}
+
+#description_section{
+    width: 75%;
+        margin-left: 200px;
+    margin-top: -25px;    
+}

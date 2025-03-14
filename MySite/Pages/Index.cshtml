@@ -1,0 +1,100 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+@*     <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+
+    <div id="topper">
+        <div id="portrait"></div>
+    </div>
+    <div id="address_info"></div>
+    @* <div id="skill_description">@Html.Raw(Model.my_message)</div> *@
+    <div id="skill_description">
+        @foreach (var item in Model.oRL)
+        {
+            <a>@item.LifestageTitle</a>
+            <div id="life_section">
+                @foreach (var item2 in Model.oRC)
+                {
+                    @if(@item.Id == item2.IdRl)
+                    {
+                        <div id="date_section"><a>@item2.DateFrom.Value.ToString("MM.yyyy") – @item2.DateTill.Value.ToString("MM.yyyy")<a /></div>
+                        <div id="description_section">
+
+                            <b>@item2.Company,</b><a> @item2.Place</a>
+                            <br/>
+                            @{
+                                string[] lines = item2.FullText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+                                foreach (var line in lines)
+                                {
+                                    <a>@line</a>
+                                    <br/>
+                                }
+                            }
+
+
+                            @* <a>@item2.FullText</a> *@
+                            <br/>
+@*                             <a>- Wartung und Weiterentwicklung der Plattform esszeit.de in VB.Net</a>
+                            <br/>
+                            <a>- Cross-Platform Development mittels .NET MAUI in C#</a>
+                            <br />
+                            <a>- RESTful-API Development mittels ASP.NET Core API in C#</a> *@
+                        </div>
+                    }
+                }
+
+
+@*                 <div id="date_section"><a>10.2022 – 01.2025<a /></div>
+                <div id="description_section">
+
+                    <b>hk.digital UG, </b><a>Aachen (Minijob / Nur Remote)</a>
+                    <br />
+                    <a>- 3rd-Level-Support für Endbenutzer</a>
+                    <br />
+                    <a>- Wartung und Weiterentwicklung der Plattform esszeit.de in VB.Net</a>
+                    <br />
+                    <a>- Cross-Platform Development mittels .NET MAUI in C#</a>
+                    <br />
+                    <a>- RESTful-API Development mittels ASP.NET Core API in C#</a>
+                </div> *@
+        </div>
+        }
+@*         <a>Praktika</a>
+        <div id="life_section">
+            <div id="date_section"><a>10.2022 – 01.2025<a /></div>
+            <div id="description_section">
+
+                <b>hk.digital UG, </b><a>Aachen (Minijob / Nur Remote)</a>
+                <br />
+                <a>- 3rd-Level-Support für Endbenutzer</a>
+                <br />
+                <a>- Wartung und Weiterentwicklung der Plattform esszeit.de in VB.Net</a>
+                <br />
+                <a>- Cross-Platform Development mittels .NET MAUI in C#</a>
+                <br />
+                <a>- RESTful-API Development mittels ASP.NET Core API in C#</a>
+            </div>
+
+            <div id="date_section"><a>10.2022 – 01.2025<a /></div>
+            <div id="description_section">
+
+                <b>hk.digital UG, </b><a>Aachen (Minijob / Nur Remote)</a>
+                <br />
+                <a>- 3rd-Level-Support für Endbenutzer</a>
+                <br />
+                <a>- Wartung und Weiterentwicklung der Plattform esszeit.de in VB.Net</a>
+                <br />
+                <a>- Cross-Platform Development mittels .NET MAUI in C#</a>
+                <br />
+                <a>- RESTful-API Development mittels ASP.NET Core API in C#</a>
+            </div>
+        </div> *@
+
+    </div>
+
+</div>
