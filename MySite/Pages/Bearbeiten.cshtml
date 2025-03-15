@@ -26,7 +26,13 @@
             <input type="text" asp-for="Company">
             <br/>
             Inhalt
-            <textarea name="ResumeContent"></textarea>
+            <textarea name="ResumeContent">@Model.ResumeContent</textarea>
+            <br />
+            Datum von
+            <input type="text" asp-for="DateFromStr">
+            <br />
+            Datum bis
+            <input type="text" asp-for="DateTillStr">
             <br />
             <input type="submit" value="Speichern" />
         </form>

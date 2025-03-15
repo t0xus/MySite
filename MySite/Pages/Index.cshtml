@@ -24,8 +24,15 @@
                     {
                         <div id="date_section"><a>@item2.DateFrom.Value.ToString("MM.yyyy") – @item2.DateTill.Value.ToString("MM.yyyy")<a /></div>
                         <div id="description_section">
-
-                            <b>@item2.Company,</b><a> @item2.Place</a>
+                            @if (HttpContext.Session.GetInt32("UserId").HasValue)
+                            {
+                                <b>@item2.Company,</b><a href="/Bearbeiten?id_content=@item2.Id"> @item2.Place</a>
+                            }
+                            else
+                            {
+                                <b>@item2.Company,</b><a> @item2.Place</a>
+                            }
+                            
                             <br/>
                             @{
                                 string[] lines = item2.FullText.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);

@@ -24,3 +24,13 @@ Email VARCHAR(100),
 Nachricht TEXT
 
 )
+
+
+
+
+CREATE TABLE resume_login(
+id SERIAL PRIMARY KEY,
+Username VARCHAR(100),
+PWHash VARCHAR(100)
+
+)

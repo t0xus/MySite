@@ -34,7 +34,13 @@ namespace MySite.Pages
         public string Company { get; set; }
         [BindProperty]
         public string Place { get; set; }
+        [BindProperty]
+        public string DateFromStr { get; set; }
+        [BindProperty]
+        public string DateTillStr { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string id_content { get; set; }
 
         public BearbeitenModel(ILogger<IndexModel> logger, resumeContext context)
         {
@@ -56,12 +62,23 @@ namespace MySite.Pages
 
             ColorOptions = lifestageOptions;
 
-            //ColorOptions = new List<SelectListItem>
-            //{
-            //    new SelectListItem("Rot", "rot"),
-            //    new SelectListItem("Blau", "blau"),
-            //    new SelectListItem("Grün", "gruen")
-            //};
+            
+            if (!string.IsNullOrEmpty(id_content))
+            {
+                // Objekt aus der DB laden
+                var content = _context.ResumeContents.Find(int.Parse(id_content));
+
+                // Werte in die BindProperties schreiben
+                string? v = content.IdRl.ToString();
+                SelectedStage = v;
+                ResumeContent = content.FullText;
+                PositionTitle = content.PositionTitle;
+                Company = content.Company;
+                Place = content.Place;
+                DateFromStr = content.DateFrom.Value.ToString("dd.MM.yyyy");
+                DateTillStr = content.DateTill.Value.ToString("dd.MM.yyyy");
+            }
+
         }
 
 
@@ -115,6 +132,23 @@ namespace MySite.Pages
                 return Page();
 
             }
+            else if (!string.IsNullOrEmpty(SelectedStage) && !string.IsNullOrEmpty(ResumeContent) && !string.IsNullOrEmpty(id_content))
+            {
+                var content = _context.ResumeContents.Find(int.Parse(id_content));
+
+                content.IdRl = (short?)int.Parse(SelectedStage);
+                content.PositionTitle = PositionTitle;
+                content.FullText = ResumeContent;
+                content.Company = Company;
+                content.Place = Place;
+                content.DateFrom = DateOnly.ParseExact(DateFromStr, "dd.MM.yyyy");
+                content.DateTill = DateOnly.ParseExact(DateTillStr, "dd.MM.yyyy");
+
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToPage("/Index");
+            }
             else if (!string.IsNullOrEmpty(SelectedStage) && !string.IsNullOrEmpty(ResumeContent))
             {
                 // Neues Objekt der Entitätsklasse anlegen
@@ -125,8 +159,8 @@ namespace MySite.Pages
                     FullText = ResumeContent,
                     Company = Company,
                     Place = Place,
-                    DateFrom = DateOnly.FromDateTime(DateTime.Now),
-                    DateTill = DateOnly.FromDateTime(DateTime.Now)
+                    DateFrom = DateOnly.ParseExact(DateFromStr, "dd.MM.yyyy"),
+                    DateTill = DateOnly.ParseExact(DateTillStr, "dd.MM.yyyy")
                 };
                 
                 // Objekt in den Kontext einfügen
