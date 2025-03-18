@@ -34,3 +34,6 @@ Username VARCHAR(100),
 PWHash VARCHAR(100)
 
 )
+
+
+SELECT * FROM resume_content
