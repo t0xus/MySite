@@ -23,7 +23,8 @@ builder.Services.AddSession(options =>
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+// API-Controller aktivieren
+builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,7 +41,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
-
+// Controller-Endpunkte
+app.MapControllers();
 app.MapRazorPages();
 
 app.Run();

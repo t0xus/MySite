@@ -26,9 +26,13 @@ namespace MySite.Pages
         public bool IsLoggedIn { get; set; }
 
         public List<SelectListItem> ColorOptions { get; set; }
-
+        public List<SelectListItem> EditLifeStageOptions { get; set; }
         [BindProperty]
         public string SelectedStage { get; set; }
+        [BindProperty]
+        public string SelectedEditStage { get; set; }
+        [BindProperty]
+        public string LifeStageName { get; set; }
         [BindProperty]
         public string ResumeContent { get; set; }
         [BindProperty]
@@ -46,11 +50,15 @@ namespace MySite.Pages
         public string id_content { get; set; }
         [BindProperty(SupportsGet = true)]
         public string logout { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string edit_section { get; set; }
 
         public BearbeitenModel(ILogger<IndexModel> logger, resumeContext context)
         {
             _logger = logger;
             _context = context;
+
+            EditLifeStageOptions = new List<SelectListItem>();
         }
 
         public void OnGet()
@@ -93,6 +101,18 @@ namespace MySite.Pages
 
                     IsLoggedIn = false;
                 }
+            }
+            else if(!string.IsNullOrEmpty(edit_section))
+            {
+                var FirstEntryPoint = new SelectListItem
+                {
+                    Value = "0",
+                    Text = "<<Neuer Eintrag>>"
+                };
+
+                EditLifeStageOptions.Add(FirstEntryPoint);
+                EditLifeStageOptions.AddRange(lifestageOptions);
+
             }
 
         }
@@ -187,6 +207,34 @@ namespace MySite.Pages
 
                 // Weiterleitung (z. B. zurück zur Index-Seite oder Danke-Seite)
                 return RedirectToPage("/Index");
+            }
+            else if (!string.IsNullOrEmpty(edit_section) && !string.IsNullOrEmpty(SelectedEditStage))
+            {
+                if (SelectedEditStage == "0")
+                {
+                    var newContent = new ResumeLifestage
+                    {
+                        LifestageTitle = LifeStageName
+                    };
+                    
+                    _context.ResumeLifestages.Add(newContent);
+
+                    // Änderungen in der DB speichern
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToPage("/Bearbeiten");
+                }
+                else
+                {
+                    var editContent = _context.ResumeLifestages.Find(int.Parse(SelectedEditStage));
+
+                    editContent.LifestageTitle = LifeStageName;
+
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToPage("/Bearbeiten");
+                }
+
             }
             //else
             //{

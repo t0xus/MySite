@@ -5,7 +5,7 @@
 }
 
 <!-- Falls du eine Erfolgsmeldung o.Ä. willst, kannst du sie hier anzeigen -->
-@if (Model.IsLoggedIn)
+@if (Model.IsLoggedIn && string.IsNullOrEmpty(Model.edit_section))
 {
     <div style="text-align:center; margin-top:50px;">
         <h2>Willkommen, du bist bereits eingeloggt!</h2>
@@ -15,6 +15,7 @@
         <form method="post">
          Abschnitt   
             <select asp-for="SelectedStage" asp-items="Model.ColorOptions"></select>
+            <a href="/Bearbeiten?edit_section=1">Bearb. Abschnitt</a>
             <br/>
          Position
             <input type="text" asp-for="PositionTitle">
@@ -37,6 +38,42 @@
             <input type="submit" value="Speichern" />
         </form>
     </div>
+}
+else if (!string.IsNullOrEmpty(Model.edit_section))
+{
+    <form method="post">
+
+    
+        <label for="myInput">Suche:</label>
+        <input type="text" id="myInput" name="LifeStageName" />
+
+        <label for="myInput">Ersetzen mit:</label>
+        <select asp-for="SelectedEditStage" asp-items="Model.EditLifeStageOptions"></select>
+        <br/>
+        <input type="submit" value="Speichern" />
+    </form>
+    <script>
+        $(function () {
+            $("#myInput").autocomplete({
+                minLength: 2,  // ab wievielen Buchstaben wird nachgeladen
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/api/suggestions",  // Dein API-Endpunkt, der Vorschläge liefert
+                        dataType: "json",
+                        data: {
+                            term: request.term  // Übergibt den eingegebenen Suchbegriff
+                        },
+                        success: function (data) {
+                            response(data); // Erwartet, dass data ein Array von Strings (oder Objekten) ist
+                        },
+                        error: function () {
+                            response([]);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }
 else
 {
