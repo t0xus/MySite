@@ -73,3 +73,54 @@ body {
         margin-left: 200px;
     margin-top: -25px;    
 }
+
+#contact_section{
+    width: 300px;
+    height: 100px;
+    /*border: 1px solid black;*/
+    margin-left: 300px;
+    margin-top: 10px;
+
+}
+
+#phone_icon {
+    background-image: url('../images/phone_icon.png');
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    float: left;
+}
+
+#mail_icon {
+    background-image: url('../images/mail_icon.png');
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    float: left;
+    margin-top: -10px;
+}
+
+#phone_number
+{
+    float: left;
+    margin-left: 10px;
+}
+
+#mail_address {
+    float: left;
+    margin-left: 10px;
+    margin-top: -10px;
+}
+
+#name_section
+{
+    /*border: 1px solid black;*/
+    width: 350px;
+    margin-left: 300px;
+    margin-top: -150px;
+}
+
+h1{
+    color: #fff;
+    font-weight: 700;
+}

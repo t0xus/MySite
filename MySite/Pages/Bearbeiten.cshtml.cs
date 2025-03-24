@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using MySite.Models;
+
 
 namespace MySite.Pages
 {
@@ -41,6 +44,8 @@ namespace MySite.Pages
 
         [BindProperty(SupportsGet = true)]
         public string id_content { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string logout { get; set; }
 
         public BearbeitenModel(ILogger<IndexModel> logger, resumeContext context)
         {
@@ -78,6 +83,17 @@ namespace MySite.Pages
                 DateFromStr = content.DateFrom.Value.ToString("dd.MM.yyyy");
                 DateTillStr = content.DateTill.Value.ToString("dd.MM.yyyy");
             }
+            else if (!string.IsNullOrEmpty(logout))
+            {
+                if (logout == "1")
+                {
+                    // Session löschen
+                    HttpContext.Session.Remove("UserId");
+                    HttpContext.Session.Remove("Username");
+
+                    IsLoggedIn = false;
+                }
+            }
 
         }
 
@@ -96,7 +112,7 @@ namespace MySite.Pages
 
             if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
             {
-                string hashed = Password; // Platzhalter: Hier sollte eigentlich dein Hashing hin
+                string hashed = ComputeSha256Hash(Password); // Platzhalter: Hier sollte eigentlich dein Hashing hin
 
                 // Datenbank nach passendem Nutzer durchsuchen
                 var user = await _context.ResumeLogins.FirstOrDefaultAsync(u => u.Username == Username && u.Pwhash == hashed);
@@ -179,10 +195,27 @@ namespace MySite.Pages
 
             //    IsLoggedIn = false;
 
-               return Page();
+            return Page();
             //}
 
 
+        }
+
+        private string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - gibt ein Byte-Array zurück
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Byte-Array in einen hexadezimalen String umwandeln
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
 
 
